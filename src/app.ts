@@ -1,9 +1,10 @@
-import {CollectionView, Composite, ImageView, NavigationView, Page, TextView, WebView, ui} from 'tabris';
+import { CollectionView, Composite, ImageView, NavigationView, Page, TextView, WebView, ui } from 'tabris';
 
 const ITEM_FETCH_COUNT = 25;
 
-let loading;
-let items = [];
+
+let loading: boolean;
+let items: RedditItem[] = [];
 
 let navigationView = new NavigationView({
   left: 0, top: 0, right: 0, bottom: 0
@@ -28,14 +29,14 @@ let collectionView = new CollectionView({
   updateCell: (view, index) => {
     let item = items[index];
     if (!(item.loading)) {
-      view.find('#itemImage').set('image', {src: item.data.thumbnail, width: 80, height: 80});
+      view.find('#itemImage').set('image', { src: item.data.thumbnail, width: 80, height: 80 });
       view.find('#nameText').set('text', item.data.title);
       view.find('#commentText').set('text', item.data.num_comments + ' comments');
       view.find('#authorText').set('text', item.data.author);
     }
   }
 }).on('refresh', loadNewItems)
-  .on('scroll', ({target: scrollView, deltaY}) => {
+  .on('scroll', ({ target: scrollView, deltaY }) => {
     if (deltaY > 0) {
       let remaining = items.length - scrollView.lastVisibleIndex;
       if (remaining < 20) {
@@ -55,7 +56,7 @@ function createItemCell() {
     elevation: 2,
     background: 'white',
     highlightOnTouch: true
-  }).on('tap', ({target: view}) => createDetailsPage(view.item.data))
+  }).on('tap', ({ target: view }) => createDetailsPage(view.item.data))
     .appendTo(cell);
   new ImageView({
     id: 'itemImage',
@@ -96,7 +97,7 @@ function createLoadingCell() {
 
 function loadInitialItems() {
   collectionView.refreshIndicator = true;
-  getJSON(createUrl({limit: ITEM_FETCH_COUNT})).then(json => {
+  getJSON(createUrl({ limit: ITEM_FETCH_COUNT })).then(json => {
     items = json.data.children;
     collectionView.itemCount = items.length;
     collectionView.refreshIndicator = false;
@@ -106,7 +107,7 @@ function loadInitialItems() {
 function loadNewItems() {
   if (!loading) {
     loading = true;
-    getJSON(createUrl({limit: ITEM_FETCH_COUNT, before: getFirstId()})).then(json => {
+    getJSON(createUrl({ limit: ITEM_FETCH_COUNT, before: getFirstId() })).then(json => {
       loading = false;
       collectionView.refreshIndicator = false;
       if (json.data.children.length > 0) {
@@ -123,9 +124,9 @@ function loadMoreItems() {
     loading = true;
     let lastId = getLastId();
     // insert placeholder item
-    items.push({loading: true});
+    items.push({ loading: true });
     collectionView.insert(items.length, 1);
-    getJSON(createUrl({limit: ITEM_FETCH_COUNT, after: lastId})).then(json => {
+    getJSON(createUrl({ limit: ITEM_FETCH_COUNT, after: lastId })).then(json => {
       loading = false;
       // remove placeholder item
       items.splice(items.length - 1, 1);
@@ -138,9 +139,17 @@ function loadMoreItems() {
   }
 }
 
-function createUrl(params) {
-  return 'http://www.reddit.com/r/petpictures.json?' + Object.keys(params).map(key => key + '=' + params[key]).join('&');
+function createUrl(params: RedditUrlParameters) {
+  let url = 'http://www.reddit.com/r/petpictures.json?' + 'limit=' + params.limit
+  if (params.before) {
+    url += 'before=' + params.before;
+  }
+  if (params.after) {
+    url += 'after=' + params.after;
+  }
+  return url;
 }
+
 
 function getFirstId() {
   return getRedditId(items[0]) || null;
@@ -150,11 +159,11 @@ function getLastId() {
   return getRedditId(items[items.length - 1]) || null;
 }
 
-function getRedditId(item) {
+function getRedditId(item: RedditItem) {
   return item ? item.kind + '_' + item.data.id : null;
 }
 
-function createDetailsPage(data) {
+function createDetailsPage(data: RedditData) {
   let detailsPage = new Page({
     background: 'black',
     title: data.title
@@ -173,6 +182,27 @@ function createDetailsPage(data) {
   }
 }
 
-function getJSON(url) {
+function getJSON(url: string) {
   return fetch(url).then(response => response.json());
+}
+
+interface RedditItem {
+  loading: boolean;
+  kind?: string;
+  data?: RedditData;
+}
+
+interface RedditData {
+  id: string;
+  url: string;
+  thumbnail: Image;
+  title: string;
+  num_comments: number;
+  author: string;
+}
+
+interface RedditUrlParameters {
+  limit: number;
+  before?: string;
+  after?: string;
 }
