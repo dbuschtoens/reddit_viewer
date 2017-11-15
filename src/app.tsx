@@ -6,15 +6,7 @@ export let navigationView = new NavigationView({
   left: 0, top: 0, right: 0, bottom: 0
 }).appendTo(ui.contentView);
 
-function openSubredditPage(subreddit: string) {
-  let subredditPage = new SubredditPage();
-  let subredditPresenter = new SubredditPresenter(subreddit);
-  subredditPresenter.bind(subredditPage);
-  subredditPage.appendTo(navigationView);
-}
-
 openSubredditPage('petpictures');
-
 document.addEventListener('online', onConnectionStateChanged, false);
 
 let connectionStateAlert = new AlertDialog({
@@ -27,6 +19,13 @@ let connectionStateAlert = new AlertDialog({
 }).on({
   closeCancel: () => navigationView.pages().dispose()
 });
+
+function openSubredditPage(subreddit: string) {
+  let subredditPage = new SubredditPage();
+  let subredditPresenter = new SubredditPresenter(subreddit);
+  subredditPresenter.bind(subredditPage);
+  subredditPage.appendTo(navigationView);
+}
 
 function onConnectionStateChanged() {
   if (navigator.connection.type === Connection.WIFI) {

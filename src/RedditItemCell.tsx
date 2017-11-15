@@ -12,9 +12,6 @@ export interface RedditCell {
   item: RedditPostData;
 }
 
-export function isRedditCell(view: Widget | RedditCell): view is RedditCell {
-  return 'item' in view;
-}
 export class RedditGalleryCell extends Composite {
 
   public readonly tsProperties: Properties<Composite> & Partial<this, RedditGalleryItemCellProperties>;
@@ -133,4 +130,8 @@ export class RedditListCell extends Composite {
     new DetailsPage(this.title, this.url).appendTo(navigationView);
   }
 
+}
+
+export function isRedditCell(view: Widget | RedditCell): view is RedditCell {
+  return 'item' in view;
 }
