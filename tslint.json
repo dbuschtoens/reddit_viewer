@@ -1,16 +1,64 @@
 {
   "extends": "tslint:recommended",
   "rules": {
-    "ordered-imports": [false],
+    "variable-name": {
+      "options": "allow-leading-underscore"
+    },
+    "member-access": true,
+    "ordered-imports": [
+      false
+    ],
     "object-literal-sort-keys": false,
-    "quotemark": [true, "single"],
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
     "await-promise": true,
-    "indent": [true, "spaces"],
-    "max-line-length": [true, 120],
+    "indent": false,
     "forin": false,
-    "interface-name": [false],
-    "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
-    "prefer-const": false
+    "interface-name": [
+      false
+    ],
+    "max-classes-per-file": false,
+    "one-line": false,
+    "arrow-parens": false,
+    "only-arrow-functions": [
+      true,
+      "allow-declarations",
+      "allow-named-functions"
+    ],
+    "prefer-const": false,
+    "no-invalid-this": true,
+    "no-unbound-method": true,
+    "no-namespace": false,
+    "match-default-export-name": true,
+    "max-line-length": [
+      true,
+      120
+    ],
+    "whitespace": [
+      true,
+      "check-module"
+    ],
+    "no-unused-variable": [
+      true,
+      {
+        "ignore-pattern": "jsxProperties|tsProperties"
+      }
+    ],
+    "no-conditional-assignment": false,
+    "typedef": [
+      true,
+      "member-variable-declaration",
+      "parameter",
+      "property-declaration"
+    ]
   }
 }

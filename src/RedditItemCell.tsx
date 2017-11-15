@@ -1,58 +1,129 @@
-import { Composite, ImageView, TextView } from 'tabris';
-import { getByType, getById } from 'tabris-decorators';
-import { RedditData } from './interfaces';
+import { Composite, ImageView, TextView, Properties, Partial } from 'tabris';
+import { bind, getByType, property } from 'tabris-decorators';
+import { RedditPostData } from './RedditService';
 import { navigationView } from './app';
 import DetailsPage from './DetailsPage';
 
-export default class RedditItemCell extends Composite {
-    private itemData: RedditData;
-    @getById private itemImage: ImageView;
-    @getById private nameText: TextView;
-    @getById private commentText: TextView;
-    @getById private authorText: TextView;
-    
-    constructor() {
-        super();
-        this.append(
-            <composite
-                left={16} right={16} top={8} bottom={8}
-                cornerRadius={2}
-                elevation={2}
-                background='white'
-                highlightOnTouch={true}
-                onTap={() => new DetailsPage(this.itemData).appendTo(navigationView)}>
-                <imageView
-                    id='itemImage'
-                    background='#e0e0e0'
-                    width={80} height={80}
-                    scaleMode='fill' />
-                <textView
-                    id='nameText'
-                    top={8} left={['#itemImage', 16]} right={16}
-                    textColor='#202020'
-                    font='medium 14px'
-                    maxLines={2} />
-                <textView
-                    id='commentText'
-                    bottom={8} right={16}
-                    alignment='right'
-                    textColor='#7CB34'
-                    font='12px' />
-                <textView
-                    id='authorText'
-                    bottom={8} left='#itemImage 16' right='#commentText 16'
-                    textColor='#767676'
-                    font='12px' />
-            </composite>
-        );
-    }
+type RedditGalleryItemCellProperties = 'title' | 'thumbnail' | 'url';
 
-    applyData(data: RedditData) {
-        this.itemData = data;
-        this.itemImage.image = { src: data.thumbnail, width: 80, height: 80 }
-        this.nameText.text = data.title;
-        this.commentText.text = data.num_comments + ' comments';
-        this.authorText.text = data.author;
-    }
+type RedditListItemCellProperties = RedditGalleryItemCellProperties | 'commentText' | 'author';
+
+export class RedditGalleryItemCell extends Composite {
+
+  public readonly tsProperties: Properties<Composite> & Partial<this, RedditGalleryItemCellProperties>;
+
+  @property public item: RedditPostData;
+  @property public url: string;
+  @property public title: string;
+  @getByType private itemImageView: ImageView;
+
+  constructor() {
+    super();
+    this.append(
+      <composite highlightOnTouch
+        left={4} right={4} top={4} bottom={4}
+        cornerRadius={2}
+        elevation={2}
+        background='white'
+        onTap={this.openDetailsPage}>
+        <imageView
+          id='itemImage'
+          background='#e0e0e0'
+          scaleMode='fill' />
+      </composite>
+    );
+    this.on('itemChanged', ({ value }) => this.applyData(value));
+  }
+
+  public set thumbnail(image: Image) {
+    this.itemImageView.image = image;
+  }
+
+  public get thumbnail() {
+    return this.itemImageView.image;
+  }
+
+  protected applyData(item: RedditPostData) {
+    this.set({
+      thumbnail: item.thumbnail,
+      title: item.title,
+      url: item.url
+    });
+  }
+
+  protected openDetailsPage = () => {
+    new DetailsPage(this.title, this.url).appendTo(navigationView);
+  }
+
+}
+
+export class RedditListItemCell extends Composite {
+
+  public readonly tsProperties: Properties<Composite> & Partial<this, RedditListItemCellProperties>;
+
+  @property public item: RedditPostData;
+  @property public url: string;
+  @bind('commentText.text') public commentText: string;
+  @bind('nameText.text') public title: string;
+  @bind('authorText.text') public author: string;
+  @getByType private itemImageView: ImageView;
+
+  constructor() {
+    super();
+    this.append(
+      <composite highlightOnTouch
+        left={16} right={16} top={8} bottom={8}
+        cornerRadius={2}
+        elevation={2}
+        background='white'
+        onTap={this.openDetailsPage}>
+        <imageView
+          id='itemImage'
+          background='#e0e0e0'
+          width={80} height={80}
+          scaleMode='fill' />
+        <textView
+          id='nameText'
+          top={8} left={['#itemImage', 16]} right={16}
+          textColor='#202020'
+          font='medium 14px'
+          maxLines={2} />
+        <textView
+          id='commentText'
+          bottom={8} right={16}
+          alignment='right'
+          textColor='#7CB342'
+          font='12px' />
+        <textView
+          id='authorText'
+          bottom={8} left='#itemImage 16' right='#commentText 16'
+          textColor='#767676'
+          font='12px' />
+      </composite>
+    );
+    this.on('itemChanged', ({ value }) => this.applyData(value));
+  }
+
+  public set thumbnail(image: Image) {
+    this.itemImageView.image = image;
+  }
+
+  public get thumbnail() {
+    return this.itemImageView.image;
+  }
+
+  private applyData(item: RedditPostData) {
+    this.set({
+      thumbnail: item.thumbnail,
+      title: item.title,
+      url: item.url,
+      commentText: item.num_comments + ' comments',
+      author: item.author
+    });
+  }
+
+  private openDetailsPage = () => {
+    new DetailsPage(this.title, this.url).appendTo(navigationView);
+  }
 
 }

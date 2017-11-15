@@ -1,128 +1,83 @@
-import { Composite, TextView, Page, Partial, Properties, WidgetCollection, ImageView, CollectionView } from 'tabris';
+import {
+  Action, Composite, TextView, Page, Partial, Properties, WidgetCollection, ImageView, CollectionView,
+  PropertyChangedEvent, EventObject
+} from 'tabris';
 import { property, getById, getByType } from 'tabris-decorators';
-import { RedditData, RedditItem, RedditUrlParameters } from './interfaces';
-import RedditItemCell from './RedditItemCell'
+import { RedditPost } from './RedditService';
+import { RedditListItemCell, RedditGalleryItemCell } from './RedditItemCell';
+import { navigationView } from './app';
 
-const ITEM_FETCH_COUNT = 25;
+const EVENT_REQUEST_ITEMS = 'request_items';
+
+type RequestItemsListener = (ev: { target: SubredditPage, count: number }) => void;
 
 export default class SubredditPage extends Page {
 
-    public readonly jsxProperties: JSX.PageProperties & Partial<this, 'subreddit'>;
+  public items: RedditPost[] = [];
+  @getByType private collectionView: CollectionView;
+  private loading: boolean;
+  private galleryMode: boolean;
+  private galleryAction: Action;
 
-    public readonly tsProperties: Properties<Page> & Partial<this, 'subreddit'>;
+  constructor(properties?: Properties<SubredditPage>) {
+    super(properties);
+    this.append(
+      new CollectionView({
+        refreshIndicator: true,
+        left: 0, top: 0, right: 0, bottom: 0,
+        background: '#f5f5f5',
+        cellHeight: 96,
+        cellType: () => this.galleryMode ? 'gallery' : 'list',
+        createCell: () => this.galleryMode ? new RedditGalleryItemCell() : new RedditListItemCell(),
+        updateCell: (view, index) => (view as any).item = this.items[index].data // TODO: cast interface?
+      }).on({
+        lastVisibleIndexChanged: this.handleLastVisibleIndexChanged
+      })
+    );
+    this.on({
+      appear: this.showGalleryAction,
+      disappear: this.hideGalleryAction
+    });
+  }
 
-    @property public subreddit: string;
-    @getByType private collectionView: CollectionView;
+  public onRequestItems(listener: RequestItemsListener) {
+    return this.on(EVENT_REQUEST_ITEMS, listener);
+  }
 
-    private loading: boolean;
-    private items: RedditItem[] = [];
+  public addItems(newItems: RedditPost[]) {
+    this.loading = false;
+    let insertionIndex = this.items.length;
+    this.items = this.items.concat(newItems);
+    this.collectionView.insert(insertionIndex, newItems.length);
+    this.collectionView.refreshIndicator = false;
+  }
 
-    constructor(properties: Properties<SubredditPage>) {
-        super(Object.assign(properties, { title: 'Reddit - ' + properties.subreddit }));
-        this.append(
-            <collectionView
-                left={0} top={0} right={0} bottom={0}
-                background='#f5f5f5'
-                refreshEnabled={true}
-                cellHeight={96}
-                cellType={index => this.items[index].loading ? 'loading' : 'normal'}
-                createCell={type => type === 'normal' ? new RedditItemCell() : this.createLoadingCell()}
-                updateCell={(view, index) => {
-                    if (view instanceof RedditItemCell) {
-                        view.applyData(this.items[index].data);
-                    }
-                }}
-                onRefresh={this.loadNewItems}
-                onScroll={({ target: scrollView, deltaY }) => {
-                    if (deltaY > 0) {
-                        let remaining = this.items.length - scrollView.lastVisibleIndex;
-                        if (remaining < 20) {
-                            this.loadMoreItems();
-                        }
-                    }
-                }} />
-        );
-        this.loadInitialItems();
+  private handleLastVisibleIndexChanged = ({ value }: PropertyChangedEvent<CollectionView, number>) => {
+    if (this.items.length - value < 20 && !this.loading) {
+      this.loading = true;
+      this.trigger(EVENT_REQUEST_ITEMS);
     }
+  }
 
-    createLoadingCell() {
-        return new TextView({
-            centerY: 0,
-            alignment: 'center',
-            text: 'Loading...'
-        });
-    }
+  private showGalleryAction = () => {
+    this.galleryAction = new Action({
+      title: this.galleryMode ? 'List' : 'Gallery',
+      win_symbol: this.galleryMode ? 'List' : 'ViewAll'
+    }).on({
+      select: this.toggleGalleryMode
+    }).appendTo(navigationView);
+  }
 
-    loadInitialItems() {
-        this.collectionView.refreshIndicator = true;
-        this.getJSON(this.createUrl({ limit: ITEM_FETCH_COUNT })).then(json => {
-            this.items = json.data.children;
-            this.collectionView.itemCount = this.items.length;
-            this.collectionView.refreshIndicator = false;
-        });
-    }
+  private hideGalleryAction = () => {
+    this.galleryAction.dispose();
+  }
 
-    loadNewItems() {
-        if (!this.loading) {
-            this.loading = true;
-            this.getJSON(this.createUrl({ limit: ITEM_FETCH_COUNT, before: this.getFirstId() })).then(json => {
-                this.loading = false;
-                this.collectionView.refreshIndicator = false;
-                if (json.data.children.length > 0) {
-                    this.items.splice(0, 0, ...json.data.children);
-                    this.collectionView.insert(0, json.data.children.length);
-                    this.collectionView.reveal(0);
-                }
-            });
-        }
-    }
+  private toggleGalleryMode = () => {
+    this.galleryMode = !this.galleryMode;
+    this.galleryAction.win_symbol = this.galleryMode ? 'List' : 'ViewAll';
+    this.galleryAction.title = this.galleryMode ? 'List' : 'Gallery';
+    this.collectionView.columnCount = this.galleryMode ? 3 : 1; // Todo: doesn't work on windows??
+    this.collectionView.load(this.items.length);
+  }
 
-    loadMoreItems() {
-        if (!this.loading) {
-            this.loading = true;
-            let lastId = this.getLastId();
-            // insert placeholder item
-            this.items.push({ loading: true });
-            this.collectionView.insert(this.items.length, 1);
-            this.getJSON(this.createUrl({ limit: ITEM_FETCH_COUNT, after: lastId })).then(json => {
-                this.loading = false;
-                // remove placeholder item
-                this.items.splice(this.items.length - 1, 1);
-                this.collectionView.remove(-1);
-                // insert new items
-                let insertionIndex = this.items.length;
-                this.items = this.items.concat(json.data.children);
-                this.collectionView.insert(insertionIndex, json.data.children.length);
-            });
-        }
-    }
-
-    createUrl(params: RedditUrlParameters) {
-        let url = 'http://www.reddit.com/r/' + this.subreddit + '.json?' + 'limit=' + params.limit;
-        if (params.before) {
-            url += 'before=' + params.before;
-        }
-        if (params.after) {
-            url += 'after=' + params.after;
-        }
-        return url;
-    }
-
-
-    getFirstId() {
-        return this.getRedditId(this.items[0]) || null;
-    }
-
-    getLastId() {
-        return this.getRedditId(this.items[this.items.length - 1]) || null;
-    }
-
-    getRedditId(item: RedditItem) {
-        return item ? item.kind + '_' + item.data.id : null;
-    }
-
-
-    getJSON(url: string): Promise<{ data: { children: RedditItem[] } }> {
-        return fetch(url).then(response => response.json());
-    }
 }
