@@ -13,13 +13,13 @@ export interface RedditCell {
 }
 
 export function isRedditCell(view: Widget | RedditCell): view is RedditCell {
-  return (view as RedditCell).item !== undefined;
+  return 'item' in view;
 }
 export class RedditGalleryCell extends Composite {
 
   public readonly tsProperties: Properties<Composite> & Partial<this, RedditGalleryItemCellProperties>;
 
-  @property public item: RedditPostData = null;
+  @property public item: RedditPostData;
   @property public url: string;
   @property public title: string;
   @getByType private itemImageView: ImageView;
@@ -68,7 +68,7 @@ export class RedditListCell extends Composite {
 
   public readonly tsProperties: Properties<Composite> & Partial<this, RedditListItemCellProperties>;
 
-  @property public item: RedditPostData = null;
+  @property public item: RedditPostData;
   @property public url: string;
   @bind('commentText.text') public commentText: string;
   @bind('nameText.text') public title: string;

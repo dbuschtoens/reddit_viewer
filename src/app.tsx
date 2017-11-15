@@ -19,7 +19,7 @@ document.addEventListener('online', onConnectionStateChanged, false);
 
 let connectionStateAlert = new AlertDialog({
   title: 'wifi connection lost',
-  message: 'You have lost connection to your wifi network. Do you wish to continue browsing with mobile data?',
+  message: 'You have lost connection to your wifi network. Do you wish to continue browsing using mobile connection?',
   buttons: {
     ok: 'yes',
     cancel: 'no'
