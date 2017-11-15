@@ -1,4 +1,4 @@
-import { Page, ImageView, WebView, Widget, WidgetCollection, Properties, Partial } from 'tabris';
+import { Page, ImageView, WebView } from 'tabris';
 import { RedditPost } from './RedditService';
 export default class DetailsPage extends Page {
     constructor(title: string, url: string) {

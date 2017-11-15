@@ -1,4 +1,4 @@
-import { Composite, ImageView, TextView, Properties, Partial } from 'tabris';
+import { Composite, ImageView, TextView, Properties, Partial, Widget } from 'tabris';
 import { bind, getByType, property } from 'tabris-decorators';
 import { RedditPostData } from './RedditService';
 import { navigationView } from './app';
@@ -8,11 +8,18 @@ type RedditGalleryItemCellProperties = 'title' | 'thumbnail' | 'url';
 
 type RedditListItemCellProperties = RedditGalleryItemCellProperties | 'commentText' | 'author';
 
-export class RedditGalleryItemCell extends Composite {
+export interface RedditCell {
+  item: RedditPostData;
+}
+
+export function isRedditCell(view: Widget | RedditCell): view is RedditCell {
+  return (view as RedditCell).item !== undefined;
+}
+export class RedditGalleryCell extends Composite {
 
   public readonly tsProperties: Properties<Composite> & Partial<this, RedditGalleryItemCellProperties>;
 
-  @property public item: RedditPostData;
+  @property public item: RedditPostData = null;
   @property public url: string;
   @property public title: string;
   @getByType private itemImageView: ImageView;
@@ -57,11 +64,11 @@ export class RedditGalleryItemCell extends Composite {
 
 }
 
-export class RedditListItemCell extends Composite {
+export class RedditListCell extends Composite {
 
   public readonly tsProperties: Properties<Composite> & Partial<this, RedditListItemCellProperties>;
 
-  @property public item: RedditPostData;
+  @property public item: RedditPostData = null;
   @property public url: string;
   @bind('commentText.text') public commentText: string;
   @bind('nameText.text') public title: string;

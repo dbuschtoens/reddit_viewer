@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "tabris": "2.2.0-dev.20171112",
-    "tabris-decorators": "0.1.0-test7"    
+    "tabris-decorators": "0.1.0-test7",
+    "@types/cordova-plugin-network-information": "^0.0.3"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.2",

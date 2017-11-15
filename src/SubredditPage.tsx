@@ -1,10 +1,10 @@
 import {
   Action, Composite, TextView, Page, Partial, Properties, WidgetCollection, ImageView, CollectionView,
-  PropertyChangedEvent, EventObject
+  PropertyChangedEvent, EventObject, device, Widget
 } from 'tabris';
 import { property, getById, getByType } from 'tabris-decorators';
 import { RedditPost } from './RedditService';
-import { RedditListItemCell, RedditGalleryItemCell } from './RedditItemCell';
+import { RedditListCell, RedditGalleryCell, isRedditCell } from './RedditItemCell';
 import { navigationView } from './app';
 
 const EVENT_REQUEST_ITEMS = 'request_items';
@@ -28,8 +28,8 @@ export default class SubredditPage extends Page {
         background: '#f5f5f5',
         cellHeight: 96,
         cellType: () => this.galleryMode ? 'gallery' : 'list',
-        createCell: () => this.galleryMode ? new RedditGalleryItemCell() : new RedditListItemCell(),
-        updateCell: (view, index) => (view as any).item = this.items[index].data // TODO: cast interface?
+        createCell: () => this.galleryMode ? new RedditGalleryCell() : new RedditListCell(),
+        updateCell: this.updateCell
       }).on({
         lastVisibleIndexChanged: this.handleLastVisibleIndexChanged
       })
@@ -52,6 +52,12 @@ export default class SubredditPage extends Page {
     this.collectionView.refreshIndicator = false;
   }
 
+  private updateCell = (view: Widget, index: number) => {
+    if (isRedditCell(view)) {
+      view.item = this.items[index].data;
+    }
+  }
+
   private handleLastVisibleIndexChanged = ({ value }: PropertyChangedEvent<CollectionView, number>) => {
     if (this.items.length - value < 20 && !this.loading) {
       this.loading = true;
@@ -60,23 +66,27 @@ export default class SubredditPage extends Page {
   }
 
   private showGalleryAction = () => {
-    this.galleryAction = new Action({
-      title: this.galleryMode ? 'List' : 'Gallery',
-      win_symbol: this.galleryMode ? 'List' : 'ViewAll'
-    }).on({
-      select: this.toggleGalleryMode
-    }).appendTo(navigationView);
+    if (device.platform !== 'windows') {
+      this.galleryAction = new Action({
+        title: this.galleryMode ? 'List' : 'Gallery',
+        win_symbol: this.galleryMode ? 'List' : 'ViewAll'
+      }).on({
+        select: this.toggleGalleryMode
+      }).appendTo(navigationView);
+    }
   }
 
   private hideGalleryAction = () => {
-    this.galleryAction.dispose();
+    if (this.galleryAction) {
+      this.galleryAction.dispose();
+    }
   }
 
   private toggleGalleryMode = () => {
     this.galleryMode = !this.galleryMode;
     this.galleryAction.win_symbol = this.galleryMode ? 'List' : 'ViewAll';
     this.galleryAction.title = this.galleryMode ? 'List' : 'Gallery';
-    this.collectionView.columnCount = this.galleryMode ? 3 : 1; // Todo: doesn't work on windows??
+    this.collectionView.columnCount = this.galleryMode ? 3 : 1;
     this.collectionView.load(this.items.length);
   }
 
