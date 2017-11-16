@@ -4,7 +4,7 @@
   "main": "dist/app.js",
   "private": true,
   "scripts": {
-    "test": "tslint 'src/**/*.ts'",
+    "test": "tslint --project ./tsconfig.json 'src/**/*.ts' 'src/**/*.tsx'",
     "build": "tsc -p .",
     "watch": "tsc -w -p .",
     "start": "npm-run-all --parallel watch serve",

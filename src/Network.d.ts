@@ -1,5 +1,5 @@
 interface Navigator {
-  connection: Connection
+  connection: Connection;
 }
 
 declare var navigator: Navigator;

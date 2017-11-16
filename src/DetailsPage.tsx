@@ -1,5 +1,4 @@
 import { Page, ImageView, WebView } from 'tabris';
-import { RedditPost } from './RedditService';
 
 export default class DetailsPage extends Page {
 

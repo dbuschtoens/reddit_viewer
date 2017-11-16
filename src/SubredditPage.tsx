@@ -1,8 +1,5 @@
-import {
-  Action, Composite, TextView, Page, Partial, Properties, WidgetCollection, ImageView, CollectionView,
-  PropertyChangedEvent, EventObject, device, Widget
-} from 'tabris';
-import { property, getById, getByType } from 'tabris-decorators';
+import { Action, Page, Properties, CollectionView, PropertyChangedEvent, device, Widget } from 'tabris';
+import { getByType } from 'tabris-decorators';
 import { RedditPost } from './RedditService';
 import RedditListCell from './RedditListCell';
 import RedditGalleryCell, { isRedditCell } from './RedditGalleryCell';

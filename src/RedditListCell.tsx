@@ -1,5 +1,5 @@
-import { Composite, ImageView, TextView, Properties, Partial, Widget } from 'tabris';
-import { bind, getByType, property } from 'tabris-decorators';
+import { Composite, ImageView } from 'tabris';
+import { bind, getByType } from 'tabris-decorators';
 import { RedditPostData } from './RedditService';
 import { navigationView } from './app';
 import DetailsPage from './DetailsPage';

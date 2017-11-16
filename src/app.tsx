@@ -1,4 +1,4 @@
-import { Action, NavigationView, ui, AlertDialog } from 'tabris';
+import { NavigationView, ui, AlertDialog } from 'tabris';
 import SubredditPage from './SubredditPage';
 import SubredditPresenter from './RedditService';
 
