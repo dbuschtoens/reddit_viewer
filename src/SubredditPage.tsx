@@ -4,7 +4,8 @@ import {
 } from 'tabris';
 import { property, getById, getByType } from 'tabris-decorators';
 import { RedditPost } from './RedditService';
-import { RedditListCell, RedditGalleryCell, isRedditCell } from './RedditItemCell';
+import RedditListCell from './RedditListCell';
+import RedditGalleryCell, { isRedditCell } from './RedditGalleryCell';
 import { navigationView } from './app';
 
 const EVENT_REQUEST_ITEMS = 'request_items';
