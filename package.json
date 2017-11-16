@@ -11,9 +11,10 @@
     "serve": "tabris serve"
   },
   "dependencies": {
-    "tabris": "2.2.0-dev.20171112",
-    "tabris-decorators": "0.1.0-test7",
-    "@types/cordova-plugin-network-information": "^0.0.3"
+    "@types/lodash": "^4.14.85",
+    "lodash": "^4.17.4",
+    "tabris": "nightly",
+    "tabris-decorators": "0.1.0-test7"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.2",

@@ -1,6 +1,7 @@
 import SubredditPage from './SubredditPage';
 import RedditPostPage from './RedditPostPage';
 import RedditService, { RedditPost } from './RedditService';
+import { last } from 'lodash';
 
 export default class SubredditPresenter {
 
@@ -20,11 +21,9 @@ export default class SubredditPresenter {
 
   public async loadItems(count: number) {
     try {
-      let itemsLength = this.view.items.length;
-      let lastItem = itemsLength ? this.view.items[itemsLength - 1] : undefined;
-      let items = await this.service.fetchItems(count, lastItem);
-      items = items.filter(post => post.data.thumbnail !== 'default');
-      this.view.addItems(items);
+      let newItems = await this.service.fetchItems(count, last(this.view.items));
+      newItems = newItems.filter(post => post.data.thumbnail !== 'default');
+      this.view.addItems(newItems);
     } catch (ex) {
       // tslint:disable-next-line:no-console
       console.error(ex);
