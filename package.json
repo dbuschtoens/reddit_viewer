@@ -11,8 +11,6 @@
     "serve": "tabris serve"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.85",
-    "lodash": "^4.17.4",
     "tabris": "nightly",
     "tabris-decorators": "0.1.0-test7"
   },
