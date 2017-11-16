@@ -1,19 +1,15 @@
-import { NavigationView, ui, AlertDialog } from 'tabris';
+import { ui } from 'tabris';
 import SubredditPage from './SubredditPage';
-import SubredditPresenter from './RedditService';
-import NetworkCheckService from './NetworkCheckService';
+import SubredditPresenter from './SubredditPresenter';
 
-new NetworkCheckService().start();
+const SUBREDDIT = 'petpictures';
 
-export let navigationView = new NavigationView({
-  left: 0, top: 0, right: 0, bottom: 0
-}).appendTo(ui.contentView);
+ui.contentView.append(
+  <navigationView left={0} top={0} right= {0} bottom={0}>
+    <SubredditPage />
+  </navigationView>
+);
 
-openSubredditPage('petpictures');
-
-export function openSubredditPage(subreddit: string) {
-  let subredditPage = new SubredditPage();
-  let subredditPresenter = new SubredditPresenter(subreddit);
-  subredditPresenter.bind(subredditPage);
-  subredditPage.appendTo(navigationView);
-}
+let subredditPresenter = new SubredditPresenter(ui.find(SubredditPage).first(), SUBREDDIT);
+subredditPresenter.autoFetchCount = 10;
+subredditPresenter.loadItems(25);

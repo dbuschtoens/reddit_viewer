@@ -6,7 +6,6 @@
   "editor.wordBasedSuggestions": false,
   "tslint.enable": true,  
   "files.exclude": {
-    "src/dom.d.ts": true,
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,

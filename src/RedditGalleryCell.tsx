@@ -1,51 +1,27 @@
-import { Composite, ImageView, Widget } from 'tabris';
-import { getByType } from 'tabris-decorators';
+import { Composite, ImageView } from 'tabris';
+import { getById } from 'tabris-decorators';
 import { RedditPostData } from './RedditService';
-import { navigationView } from './app';
-import DetailsPage from './DetailsPage';
-
-export interface RedditCell {
-  item: RedditPostData;
-}
 
 export default class RedditGalleryCell extends Composite {
 
   private _item: RedditPostData;
-  @getByType private itemImageView: ImageView;
-  private url: string;
-  private title: string;
+  @getById private thumbView: ImageView;
 
   constructor() {
     super();
     this.append(
-      <composite highlightOnTouch
-          left={4} right={4} top={4} bottom={4}
-          cornerRadius={2}
-          elevation={2}
-          background='white'
-          onTap={this.openDetailsPage}>
-        <imageView
-            id='itemImage'
-            background='#e0e0e0'
-            scaleMode='fill' />
-      </composite>
+      <imageView
+          left={0} right={0} bottom={0} top={0}
+          id='thumbView'
+          background='#e0e0e0'
+          scaleMode='fill' />
     );
   }
 
   public set item(item: RedditPostData) {
-    this.itemImageView.image = item.thumbnail;
-    this.title = item.title;
-    this.url = item.url;
+    this.thumbView.image = item.thumbnail;
   }
 
   public get item() { return this._item; }
 
-  private openDetailsPage = () => {
-    new DetailsPage(this.title, this.url).appendTo(navigationView);
-  }
-
-}
-
-export function isRedditCell(view: Widget | RedditCell): view is RedditCell {
-  return 'item' in view;
 }
