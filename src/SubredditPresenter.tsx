@@ -15,7 +15,7 @@ export default class SubredditPresenter {
     view.title = '/r/' + this.subreddit;
     view.onItemsRequested(() => this.loadItems(this.autoFetchCount));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
-    view.galleryAction.onModeChanged(ev => view.galleryMode = ev.value === 'list');
+    // view.galleryAction.onModeChanged(ev => view.galleryMode = ev.value === 'list');
   }
 
   public async loadItems(count: number) {

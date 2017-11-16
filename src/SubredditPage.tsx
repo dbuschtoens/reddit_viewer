@@ -31,13 +31,11 @@ export default class SubredditPage extends Page {
           left={0} top={0} right={0} bottom={0}
           background='#f5f5f5'
           cellHeight={this.cellHeight}
-          cellType={this.cellType}
           createCell={this.createCell}
           updateCell={this.updateCell}
           onSelect={this.handleSelect}
           onLastVisibleIndexChanged={this.handleLastVisibleIndexChanged}/>
     );
-    this.galleryAction = <GalleryAction page={this}/>;
   }
 
   public onItemSelected(listener: ItemSelectedListener) {
@@ -48,13 +46,13 @@ export default class SubredditPage extends Page {
     return this.on(EVENT_ITEMS_REQUESTED, listener);
   }
 
-  public set galleryMode(galleryMode: boolean) {
-    this._galleryMode = galleryMode;
-    this.collectionView.columnCount = this.galleryMode ? 3 : 1;
-    this.collectionView.load(this.items.length);
-  }
+  // public set galleryMode(galleryMode: boolean) {
+  //   this._galleryMode = galleryMode;
+  //   this.collectionView.columnCount = this.galleryMode ? 3 : 1;
+  //   this.collectionView.load(this.items.length);
+  // }
 
-  public get galleryMode() { return this._galleryMode; }
+  // public get galleryMode() { return this._galleryMode; }
 
   public get items() { return this._items.concat(); } // safe copy
 
@@ -83,14 +81,12 @@ export default class SubredditPage extends Page {
 
   // Callbacks:
 
-  private cellType = () => this._galleryMode ? 'gallery' : 'list';
+  private createCell = () => new RedditListCell();
 
-  private createCell = (type: string) => type === 'gallery' ? new RedditGalleryCell() : new RedditListCell();
-
-  private cellHeight = (index: number, type: string) => type === 'gallery' ? 160 : 96;
+  private cellHeight = () => 96;
 
   private updateCell = (view: Widget, index: number) => {
-    if (view instanceof RedditListCell || view instanceof RedditGalleryCell) {
+    if (view instanceof RedditListCell) {
       view.item = this._items[index].data;
     }
   }
