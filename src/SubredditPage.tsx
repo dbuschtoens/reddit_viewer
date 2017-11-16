@@ -30,7 +30,7 @@ export default class SubredditPage extends Page {
       <collectionView refreshEnabled
           left={0} top={0} right={0} bottom={0}
           background='#f5f5f5'
-          cellHeight={96}
+          cellHeight={this.cellHeight}
           cellType={this.cellType}
           createCell={this.createCell}
           updateCell={this.updateCell}
@@ -86,6 +86,8 @@ export default class SubredditPage extends Page {
   private cellType = () => this._galleryMode ? 'gallery' : 'list';
 
   private createCell = (type: string) => type === 'gallery' ? new RedditGalleryCell() : new RedditListCell();
+
+  private cellHeight = (index: number, type: string) => type === 'gallery' ? 160 : 96;
 
   private updateCell = (view: Widget, index: number) => {
     if (view instanceof RedditListCell || view instanceof RedditGalleryCell) {
