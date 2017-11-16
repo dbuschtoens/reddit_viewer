@@ -81,12 +81,12 @@ export default class SubredditPage extends Page {
 
   // Callbacks:
 
-  private createCell = () => new RedditListCell();
+  private createCell = () => new RedditGalleryCell();
 
-  private cellHeight = () => 96;
+  private cellHeight = () => 160;
 
   private updateCell = (view: Widget, index: number) => {
-    if (view instanceof RedditListCell) {
+    if (view instanceof RedditGalleryCell) {
       view.item = this._items[index].data;
     }
   }

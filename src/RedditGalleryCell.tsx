@@ -14,7 +14,7 @@ export default class RedditGalleryCell extends Composite {
           left={0} right={0} bottom={0} top={0}
           id='thumbView'
           background='#e0e0e0'
-          scaleMode='fill' />
+          scaleMode='fit' />
     );
   }
 
