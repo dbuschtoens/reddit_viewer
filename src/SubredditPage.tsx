@@ -32,14 +32,25 @@ export default class SubredditPage extends Page {
           background='#f5f5f5'
           cellHeight={this.cellHeight}
           createCell={this.createCell}
-          updateCell={this.updateCell}
-          onSelect={this.handleSelect}/>
+          updateCell={this.updateCell}/>
     );
   }
 
   public onItemSelected(listener: ItemSelectedListener) {
     return this.on(EVENT_ITEM_SELECTED, listener);
   }
+
+  public get items() { return this._items.concat(); } // safe copy
+
+  public addItems(newItems: RedditPost[]) {
+    this.loading = false;
+    let insertionIndex = this._items.length;
+    this._items = this._items.concat(newItems);
+    this.collectionView.insert(insertionIndex, newItems.length);
+    this.collectionView.refreshIndicator = false;
+  }
+
+  //#region
 
   // public onItemsRequested(listener: ItemsRequestedListener) {
   //   return this.on(EVENT_ITEMS_REQUESTED, listener);
@@ -53,16 +64,6 @@ export default class SubredditPage extends Page {
 
   // public get galleryMode() { return this._galleryMode; }
 
-  public get items() { return this._items.concat(); } // safe copy
-
-  public addItems(newItems: RedditPost[]) {
-    this.loading = false;
-    let insertionIndex = this._items.length;
-    this._items = this._items.concat(newItems);
-    this.collectionView.insert(insertionIndex, newItems.length);
-    this.collectionView.refreshIndicator = false;
-  }
-
   // Handler:
 
   // private handleLastVisibleIndexChanged = ({ value }: PropertyChangedEvent<CollectionView, number>) => {
@@ -72,11 +73,13 @@ export default class SubredditPage extends Page {
   //   }
   // }
 
-  private handleSelect = ({index}: CollectionViewSelectEvent) => {
-    let item = this.items[index];
-    let eventObject: ItemSelectedEvent = Object.assign(new EventObject<this>(), {item});
-    this.trigger(EVENT_ITEM_SELECTED, eventObject);
-  }
+  // private handleSelect = ({index}: CollectionViewSelectEvent) => {
+  //   let item = this.items[index];
+  //   let eventObject: ItemSelectedEvent = Object.assign(new EventObject<this>(), {item});
+  //   this.trigger(EVENT_ITEM_SELECTED, eventObject);
+  // }
+
+  //#endregion
 
   // Callbacks:
 
