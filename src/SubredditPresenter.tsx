@@ -13,8 +13,6 @@ export default class SubredditPresenter {
   ) {
     this.service = new RedditService(this.subreddit);
     view.title = '/r/' + this.subreddit;
-    view.onItemSelected(ev => this.openDetailsPage(ev.item));
-    // view.galleryAction.onModeChanged(ev => view.galleryMode = ev.value === 'list');
   }
 
   public async loadItems(count: number) {
@@ -30,10 +28,10 @@ export default class SubredditPresenter {
     }
   }
 
-  private openDetailsPage = (item: RedditPost) => {
-    this.view.parent().append(
-      <RedditPostPage item={item}/>
-    );
-  }
+  // private openDetailsPage = (item: RedditPost) => {
+  //   this.view.parent().append(
+  //     <RedditPostPage item={item}/>
+  //   );
+  // }
 
 }

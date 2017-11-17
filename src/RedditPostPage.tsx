@@ -7,8 +7,6 @@ interface ItemProperty {item: RedditPost; }
 
 export default class RedditPostPage extends Page {
 
-  public jsxProperties: JSX.PageProperties & ItemProperty;
-
   public readonly item: RedditPost;
 
   constructor(properties: Properties<RedditPostPage> & ItemProperty) {
