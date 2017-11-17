@@ -21,7 +21,7 @@ export default class SubredditPage extends Page {
 
   private _items: RedditPost[] = [];
   private _galleryMode: boolean;
-  private loading: boolean;
+  private loading: boolean = true;
   @getByType private collectionView: CollectionView;
 
   constructor(properties?: Properties<SubredditPage>) {
@@ -33,8 +33,7 @@ export default class SubredditPage extends Page {
           cellHeight={this.cellHeight}
           createCell={this.createCell}
           updateCell={this.updateCell}
-          onSelect={this.handleSelect}
-          onLastVisibleIndexChanged={this.handleLastVisibleIndexChanged}/>
+          onSelect={this.handleSelect}/>
     );
   }
 
@@ -42,9 +41,9 @@ export default class SubredditPage extends Page {
     return this.on(EVENT_ITEM_SELECTED, listener);
   }
 
-  public onItemsRequested(listener: ItemsRequestedListener) {
-    return this.on(EVENT_ITEMS_REQUESTED, listener);
-  }
+  // public onItemsRequested(listener: ItemsRequestedListener) {
+  //   return this.on(EVENT_ITEMS_REQUESTED, listener);
+  // }
 
   // public set galleryMode(galleryMode: boolean) {
   //   this._galleryMode = galleryMode;
@@ -66,12 +65,12 @@ export default class SubredditPage extends Page {
 
   // Handler:
 
-  private handleLastVisibleIndexChanged = ({ value }: PropertyChangedEvent<CollectionView, number>) => {
-    if (this.items.length - value < (20 / this.collectionView.columnCount) && !this.loading) {
-      this.loading = true;
-      this.trigger(EVENT_ITEMS_REQUESTED);
-    }
-  }
+  // private handleLastVisibleIndexChanged = ({ value }: PropertyChangedEvent<CollectionView, number>) => {
+  //   if (this.items.length - value < (20 / this.collectionView.columnCount) && !this.loading) {
+  //     this.loading = true;
+  //     this.trigger(EVENT_ITEMS_REQUESTED);
+  //   }
+  // }
 
   private handleSelect = ({index}: CollectionViewSelectEvent) => {
     let item = this.items[index];

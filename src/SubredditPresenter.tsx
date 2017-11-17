@@ -13,7 +13,6 @@ export default class SubredditPresenter {
   ) {
     this.service = new RedditService(this.subreddit);
     view.title = '/r/' + this.subreddit;
-    view.onItemsRequested(() => this.loadItems(this.autoFetchCount));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
     // view.galleryAction.onModeChanged(ev => view.galleryMode = ev.value === 'list');
   }
