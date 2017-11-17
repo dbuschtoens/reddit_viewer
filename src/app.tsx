@@ -23,11 +23,7 @@ ui.contentView.append(
   </navigationView>
 );
 
-test();
-
-async function test() {
-  let service = new RedditService(SUBREDDIT);
-  let items = await service.fetchItems(20);
-  // tslint:disable-next-line:no-console
-  console.log(items);
-}
+let service = new RedditService(SUBREDDIT);
+let items = service.fetchItems(20);
+// tslint:disable-next-line:no-console
+console.log(items);
