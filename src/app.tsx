@@ -1,7 +1,4 @@
 import { ui } from 'tabris';
-import SubredditPage from './SubredditPage';
-import SubredditPresenter from './SubredditPresenter';
-import RedditService from './RedditService';
 
 const SUBREDDIT = 'petpictures';
 
@@ -22,8 +19,3 @@ ui.contentView.append(
     </page>
   </navigationView>
 );
-
-let service = new RedditService(SUBREDDIT);
-let items = service.fetchItems(20);
-// tslint:disable-next-line:no-console
-console.log(items);
