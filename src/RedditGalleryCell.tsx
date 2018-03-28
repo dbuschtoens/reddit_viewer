@@ -1,8 +1,8 @@
 import { Composite, ImageView } from 'tabris';
-import { getById } from 'tabris-decorators';
+import { getById, component } from 'tabris-decorators';
 import { RedditPostData } from './RedditService';
 
-export default class RedditGalleryCell extends Composite {
+@component export default class RedditGalleryCell extends Composite {
 
   private _item: RedditPostData;
   @getById private thumbView: ImageView;

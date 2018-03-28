@@ -2,7 +2,7 @@ import {
   Page, Properties, CollectionView, PropertyChangedEvent, Widget, EventObject,
   CollectionViewSelectEvent
 } from 'tabris';
-import { getByType } from 'tabris-decorators';
+import { getById, component } from 'tabris-decorators';
 import { RedditPost } from './RedditService';
 import RedditListCell from './RedditListCell';
 import RedditGalleryCell from './RedditGalleryCell';
@@ -15,19 +15,20 @@ type ItemSelectedEvent = EventObject<SubredditPage> & {item: RedditPost};
 type ItemsRequestedListener = (ev: EventObject<SubredditPage>) => void;
 type ItemSelectedListener = (ev: ItemSelectedEvent) => void;
 
-export default class SubredditPage extends Page {
+@component export default class SubredditPage extends Page {
 
   public galleryAction: GalleryAction;
 
   private _items: RedditPost[] = [];
   private _galleryMode: boolean;
   private loading: boolean;
-  @getByType private collectionView: CollectionView;
+  @getById private collectionView: CollectionView;
 
   constructor(properties?: Properties<SubredditPage>) {
     super(properties);
     this.append(
       <collectionView refreshEnabled
+          id='collectionView'
           left={0} top={0} right={0} bottom={0}
           background='#f5f5f5'
           cellHeight={this.cellHeight}

@@ -1,14 +1,14 @@
 import { Composite, ImageView } from 'tabris';
-import { bind, getByType } from 'tabris-decorators';
+import { bind, getById, component } from 'tabris-decorators';
 import { RedditPostData } from './RedditService';
 
-export default class RedditListCell extends Composite {
+@component export default class RedditListCell extends Composite {
 
   private _item: RedditPostData;
-  @getByType private thumbView: ImageView;
-  @bind('commentText.text') private commentText: string;
-  @bind('nameText.text') private title: string;
-  @bind('authorText.text') private author: string;
+  @getById private thumbView: ImageView;
+  @bind('#commentText.text') private commentText: string;
+  @bind('#nameText.text') private title: string;
+  @bind('#authorText.text') private author: string;
 
   constructor() {
     super();

@@ -13,8 +13,8 @@
   "dependencies": {
     "@types/lodash": "^4.14.85",
     "lodash": "^4.17.4",
-    "tabris": "nightly",
-    "tabris-decorators": "0.1.0-test7"
+    "tabris": "2.4.2",
+    "tabris-decorators": "0.2.0-test2"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.2",
