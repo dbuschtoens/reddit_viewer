@@ -1,14 +1,12 @@
 import { Action, Properties, PropertyChangedEvent, Page } from 'tabris';
-import { property } from 'tabris-decorators';
+import { property, Listeners, event, ChangeListeners } from 'tabris-decorators';
 
 export type Mode = 'gallery' | 'list';
-
-interface GalleryActionParams {page: Page; }
 
 export default class GalleryAction extends Action {
 
   public jsxProperties: JSX.ActionProperties & GalleryActionParams;
-
+  @event public readonly onModeChanged: ChangeListeners<Mode>;
   @property public mode: Mode;
   @property public readonly page: Page;
 
@@ -17,20 +15,19 @@ export default class GalleryAction extends Action {
     this.on({select: ev => this.mode = this.mode === 'list' ? 'gallery' : 'list'});
     this.onModeChanged(this.handleModeChanged);
     this.page.on({appear: this.show, disappear: this.hide});
-    this.mode = 'gallery';
-  }
-
-  public onModeChanged(listener: (ev: PropertyChangedEvent<this, Mode>) => void) {
-    this.on('modeChanged', listener);
+    this.mode = 'list';
+    this.show();
   }
 
   private handleModeChanged = () => {
-    this.win_symbol = this.mode === 'list' ? 'List' : 'ViewAll';
-    this.title = this.mode === 'list' ? 'List' : 'Gallery';
+    this.win_symbol = this.mode === 'gallery' ? 'List' : 'ViewAll';
+    this.title = this.mode === 'gallery' ? 'List' : 'Gallery';
   }
 
   private show = () => {
-    this.page.parent().append(this);
+    if (this.page.parent()) {
+      this.page.parent().append(this);
+    }
   }
 
   private hide = () => {
@@ -38,3 +35,5 @@ export default class GalleryAction extends Action {
   }
 
 }
+
+interface GalleryActionParams { page: Page; }

@@ -6,14 +6,10 @@ import { getById, component, event, Listeners } from 'tabris-decorators';
 import { RedditPost } from './RedditService';
 import RedditListCell from './RedditListCell';
 import RedditGalleryCell from './RedditGalleryCell';
-import GalleryAction, { Mode } from './GalleryAction';
-
-const EVENT_ITEMS_REQUESTED = 'itemsRequested';
-const EVENT_ITEM_SELECTED = 'itemSelected';
+import { Mode } from './GalleryAction';
 
 @component export default class SubredditPage extends Page {
 
-  public readonly galleryAction: GalleryAction = <GalleryAction page={this}/>;
   @event public readonly onItemSelected: Listeners<{item: RedditPost}>;
   @event public readonly onItemsRequested: Listeners;
 
@@ -35,7 +31,6 @@ const EVENT_ITEM_SELECTED = 'itemSelected';
           onSelect={ev => this.onItemSelected.trigger({item: this._items[ev.index]})}
           onLastVisibleIndexChanged={this.handleLastVisibleIndexChanged}/>
     );
-    this.mode = 'list';
   }
 
   public set mode(mode: Mode) {
