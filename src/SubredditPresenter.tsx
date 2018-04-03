@@ -1,25 +1,27 @@
-import SubredditPage from './SubredditPage';
 import RedditPostPage from './RedditPostPage';
 import RedditService from './RedditService';
 import { last } from 'lodash';
 import GalleryAction from './GalleryAction';
-import { RedditPost, AUTO_FETCH_COUNT } from './common';
+import { RedditPost, AUTO_FETCH_COUNT, ViewMode } from './common';
+import { Listener, Listeners } from 'tabris-decorators';
+import { NavigationView, Composite } from 'tabris';
 
 export default class SubredditPresenter {
 
   private readonly service: RedditService;
-  private readonly galleryAction: GalleryAction;
 
   constructor(
-    private readonly view: SubredditPage,
-    private readonly subreddit: string
+    private readonly subreddit: string,
+    private readonly view: SubredditView,
+    private readonly galleryAction: GalleryAction
   ) {
     this.service = new RedditService(this.subreddit);
     view.title = '/r/' + this.subreddit;
     view.onItemsRequested(() => this.loadItems(AUTO_FETCH_COUNT));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
-    this.galleryAction = <GalleryAction page={view}/>;
-    this.galleryAction.onModeChanged(() => this.updateMode());
+    view.onAppear(() => galleryAction.visible = true);
+    view.onDisappear(() => galleryAction.visible = false);
+    galleryAction.onModeChanged(() => this.updateMode());
     this.updateMode();
   }
 
@@ -43,4 +45,16 @@ export default class SubredditPresenter {
     );
   }
 
+}
+
+export abstract class SubredditView {
+  public title: string;
+  public mode: ViewMode;
+  public abstract items: RedditPost[];
+  public readonly onAppear: Listeners;
+  public readonly onDisappear: Listeners;
+  public abstract onItemsRequested: Listeners;
+  public abstract onItemSelected: Listeners<{item: RedditPost}>;
+  public abstract addItems(items: RedditPost[]): any;
+  public abstract parent(): Composite;
 }

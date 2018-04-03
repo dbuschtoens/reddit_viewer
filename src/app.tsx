@@ -1,13 +1,19 @@
 import { ui } from 'tabris';
-import { SUBREDDIT } from './common';
+import { SUBREDDIT, FILL_LAYOUT } from './common';
 import SubredditPage from './SubredditPage';
 import SubredditPresenter from './SubredditPresenter';
+import GalleryAction from './GalleryAction';
 
 ui.contentView.append(
-  <navigationView left={0} top={0} right= {0} bottom={0}>
+  <navigationView {...FILL_LAYOUT}>
+    <GalleryAction/>
     <SubredditPage />
   </navigationView>
 );
 
-const subredditPresenter = new SubredditPresenter(ui.find(SubredditPage).first(), SUBREDDIT);
+const subredditPresenter = new SubredditPresenter(
+  SUBREDDIT,
+  ui.find(SubredditPage).first(),
+  ui.find(GalleryAction).first()
+);
 subredditPresenter.loadItems(25);

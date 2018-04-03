@@ -6,11 +6,14 @@ import { getById, component, event, Listeners } from 'tabris-decorators';
 import RedditListCell from './RedditListCell';
 import RedditGalleryCell from './RedditGalleryCell';
 import { FILL_LAYOUT, ViewMode, isList, RedditPost } from './common';
+import * as presenter from './SubredditPresenter';
 
-@component export default class SubredditPage extends Page {
+@component export default class SubredditPage extends Page implements presenter.SubredditView {
 
   @event public readonly onItemSelected: Listeners<{item: RedditPost}>;
   @event public readonly onItemsRequested: Listeners;
+  @event public readonly onAppear: Listeners;
+  @event public readonly onDisappear: Listeners;
 
   private _items: RedditPost[] = [];
   private _mode: ViewMode;
