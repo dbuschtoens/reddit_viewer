@@ -2,11 +2,11 @@ import { ui } from 'tabris';
 import { SUBREDDIT, FILL_LAYOUT } from './common';
 import SubredditPage from './SubredditPage';
 import SubredditPresenter from './SubredditPresenter';
-import GalleryAction from './GalleryAction';
+import ViewModeToggleAction from './GalleryAction';
 
 ui.contentView.append(
   <navigationView {...FILL_LAYOUT}>
-    <GalleryAction/>
+    <ViewModeToggleAction/>
     <SubredditPage />
   </navigationView>
 );
@@ -14,6 +14,6 @@ ui.contentView.append(
 const subredditPresenter = new SubredditPresenter(
   SUBREDDIT,
   ui.find(SubredditPage).first(),
-  ui.find(GalleryAction).first()
+  ui.find(ViewModeToggleAction).first()
 );
 subredditPresenter.loadItems(25);

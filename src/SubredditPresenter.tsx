@@ -1,9 +1,8 @@
 import RedditPostPage from './RedditPostPage';
 import RedditService from './RedditService';
 import { last } from 'lodash';
-import GalleryAction from './GalleryAction';
 import { RedditPost, AUTO_FETCH_COUNT, ViewMode } from './common';
-import { Listener, Listeners } from 'tabris-decorators';
+import { Listener, Listeners, ChangeListeners } from 'tabris-decorators';
 import { NavigationView, Composite } from 'tabris';
 
 export default class SubredditPresenter {
@@ -13,15 +12,15 @@ export default class SubredditPresenter {
   constructor(
     private readonly subreddit: string,
     private readonly view: SubredditView,
-    private readonly galleryAction: GalleryAction
+    private readonly viewModeToggleView: ViewModeToggleView
   ) {
     this.service = new RedditService(this.subreddit);
     view.title = '/r/' + this.subreddit;
     view.onItemsRequested(() => this.loadItems(AUTO_FETCH_COUNT));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
-    view.onAppear(() => galleryAction.visible = true);
-    view.onDisappear(() => galleryAction.visible = false);
-    galleryAction.onModeChanged(() => this.updateMode());
+    view.onAppear(() => viewModeToggleView.visible = true);
+    view.onDisappear(() => viewModeToggleView.visible = false);
+    viewModeToggleView.onModeChanged(() => this.updateMode());
     this.updateMode();
   }
 
@@ -36,7 +35,7 @@ export default class SubredditPresenter {
   }
 
   private updateMode() {
-    this.view.mode = this.galleryAction.mode;
+    this.view.mode = this.viewModeToggleView.mode;
   }
 
   private openDetailsPage = (item: RedditPost) => {
@@ -57,4 +56,10 @@ export abstract class SubredditView {
   public abstract onItemSelected: Listeners<{item: RedditPost}>;
   public abstract addItems(items: RedditPost[]): any;
   public abstract parent(): Composite;
+}
+
+export abstract class ViewModeToggleView {
+  public mode: ViewMode;
+  public visible: boolean;
+  public onModeChanged: ChangeListeners<ViewMode>;
 }
