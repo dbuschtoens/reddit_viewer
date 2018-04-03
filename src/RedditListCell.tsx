@@ -1,14 +1,14 @@
 import { Composite, ImageView } from 'tabris';
-import { bind, getById, component } from 'tabris-decorators';
+import { bind, getById, component, property } from 'tabris-decorators';
 import { RedditPostData } from './common';
 
 @component export default class RedditListCell extends Composite {
 
   private _item: RedditPostData;
-  @getById private thumbView: ImageView;
-  @bind('#commentText.text') private commentText: string;
-  @bind('#nameText.text') private title: string;
-  @bind('#authorText.text') private author: string;
+  @property private commentText: string;
+  @property private title: string;
+  @property private author: string;
+  @property private image: Image;
 
   constructor() {
     super();
@@ -19,21 +19,25 @@ import { RedditPostData } from './common';
           elevation={2}
           background='white'>
         <imageView id='thumbView'
-            background='#e0e0e0'
             width={80} height={80}
+            bind-image='image'
+            background='#e0e0e0'
             scaleMode='fill' />
-        <textView id='nameText'
-            top={8} left={['#thumbView', 16]} right={16}
+        <textView markupEnabled
+            top={8} left='prev() 16' right={16}
+            bind-text='title'
             textColor='#202020'
             font='medium 14px'
             maxLines={2} />
-        <textView id='commentText'
+        <textView
             bottom={8} right={16}
+            bind-text='commentText'
             alignment='right'
             textColor='#7CB342'
             font='12px' />
-        <textView id='authorText'
-            bottom={8} left='#thumbView 16' right='#commentText 16'
+        <textView
+            bottom={8} left='#thumbView 16' right='prev() 16'
+            bind-text='author'
             textColor='#767676'
             font='12px' />
       </composite>
@@ -42,10 +46,10 @@ import { RedditPostData } from './common';
 
   public set item(item: RedditPostData) {
     this._item = item;
-    this.thumbView.image = this._item.thumbnail;
-    this.title = this._item.title,
-    this.commentText = this._item.num_comments + ' comments',
-    this.author = this._item.author;
+    this.image = item.thumbnail;
+    this.title = item.title,
+    this.commentText = item.num_comments + ' comments',
+    this.author = item.author;
   }
 
   public get item() {
