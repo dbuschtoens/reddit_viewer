@@ -1,8 +1,9 @@
 import { ui } from 'tabris';
 import { SUBREDDIT, FILL_LAYOUT } from './common';
 import SubredditPage from './SubredditPage';
-import SubredditPresenter from './SubredditPresenter';
-import ViewModeToggleAction from './GalleryAction';
+import SubredditPresenter, { SubredditView, ViewModeToggleView } from './SubredditPresenter';
+import ViewModeToggleAction from './ViewModeToggleAction';
+import { injector } from 'tabris-decorators';
 
 ui.contentView.append(
   <navigationView {...FILL_LAYOUT}>
@@ -11,9 +12,6 @@ ui.contentView.append(
   </navigationView>
 );
 
-const subredditPresenter = new SubredditPresenter(
-  SUBREDDIT,
-  ui.find(SubredditPage).first(),
-  ui.find(ViewModeToggleAction).first()
-);
-subredditPresenter.loadItems(25);
+injector.addHandler(SubredditView, () => ui.find(SubredditPage).first());
+injector.addHandler(ViewModeToggleView, () => ui.find(ViewModeToggleAction).first());
+injector.create(SubredditPresenter, [SUBREDDIT]).loadItems(25);
