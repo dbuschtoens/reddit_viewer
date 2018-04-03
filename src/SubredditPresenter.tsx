@@ -1,12 +1,12 @@
 import SubredditPage from './SubredditPage';
 import RedditPostPage from './RedditPostPage';
-import RedditService, { RedditPost } from './RedditService';
+import RedditService from './RedditService';
 import { last } from 'lodash';
 import GalleryAction from './GalleryAction';
+import { RedditPost, AUTO_FETCH_COUNT } from './common';
 
 export default class SubredditPresenter {
 
-  public autoFetchCount: number = 0;
   private readonly service: RedditService;
   private readonly galleryAction: GalleryAction;
 
@@ -16,7 +16,7 @@ export default class SubredditPresenter {
   ) {
     this.service = new RedditService(this.subreddit);
     view.title = '/r/' + this.subreddit;
-    view.onItemsRequested(() => this.loadItems(this.autoFetchCount));
+    view.onItemsRequested(() => this.loadItems(AUTO_FETCH_COUNT));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
     this.galleryAction = <GalleryAction page={view}/>;
     this.galleryAction.onModeChanged(() => this.updateMode());
@@ -25,9 +25,8 @@ export default class SubredditPresenter {
 
   public async loadItems(count: number) {
     try {
-      let newItems = await this.service.fetchItems(count, last(this.view.items));
-      newItems = newItems.filter(post => post.data.thumbnail !== 'default');
-      this.view.addItems(newItems);
+      const newItems = await this.service.fetchItems(count, last(this.view.items));
+      this.view.addItems(newItems.filter(post => post.data.thumbnail !== 'default'));
     } catch (ex) {
       // tslint:disable-next-line:no-console
       console.error(ex);

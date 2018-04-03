@@ -1,6 +1,6 @@
 import { Composite, ImageView } from 'tabris';
 import { getById, component } from 'tabris-decorators';
-import { RedditPostData } from './RedditService';
+import { RedditPostData, FILL_LAYOUT } from './common';
 
 @component export default class RedditGalleryCell extends Composite {
 
@@ -10,9 +10,8 @@ import { RedditPostData } from './RedditService';
   constructor() {
     super();
     this.append(
-      <imageView
-          left={0} right={0} bottom={0} top={0}
-          id='thumbView'
+      <imageView id='thumbView'
+          {...FILL_LAYOUT}
           background='#e0e0e0'
           scaleMode='fill' />
     );
@@ -22,6 +21,8 @@ import { RedditPostData } from './RedditService';
     this.thumbView.image = item.thumbnail;
   }
 
-  public get item() { return this._item; }
+  public get item() {
+    return this._item;
+  }
 
 }

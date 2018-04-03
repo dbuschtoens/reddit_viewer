@@ -1,10 +1,12 @@
+import { RedditPost, RedditJsonResponse } from './common';
+
 export default class RedditService {
 
   constructor(private readonly subreddit: string) { }
 
   public async fetchItems(count: number, lastItem?: RedditPost): Promise<RedditPost[]> {
-    let response = await fetch(this.createRequestUrl(count, lastItem));
-    let json = await response.json() as RedditJsonResponse;
+    const response = await fetch(this.createRequestUrl(count, lastItem));
+    const json = await response.json() as RedditJsonResponse;
     return json.data.children;
   }
 
@@ -16,24 +18,4 @@ export default class RedditService {
     return url;
   }
 
-}
-
-export interface RedditPost {
-  kind: string;
-  data: RedditPostData;
-}
-
-export interface RedditPostData {
-  id: string;
-  url: string;
-  thumbnail: string;
-  title: string;
-  num_comments: number;
-  author: string;
-}
-
-interface RedditJsonResponse {
-  data: {
-    children: RedditPost[]
-  };
 }

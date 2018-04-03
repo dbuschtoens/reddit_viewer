@@ -1,6 +1,6 @@
 import { Composite, ImageView } from 'tabris';
 import { bind, getById, component } from 'tabris-decorators';
-import { RedditPostData } from './RedditService';
+import { RedditPostData } from './common';
 
 @component export default class RedditListCell extends Composite {
 
@@ -18,25 +18,21 @@ import { RedditPostData } from './RedditService';
           cornerRadius={2}
           elevation={2}
           background='white'>
-        <imageView
-            id='thumbView'
+        <imageView id='thumbView'
             background='#e0e0e0'
             width={80} height={80}
             scaleMode='fill' />
-        <textView
-            id='nameText'
+        <textView id='nameText'
             top={8} left={['#thumbView', 16]} right={16}
             textColor='#202020'
             font='medium 14px'
             maxLines={2} />
-        <textView
-            id='commentText'
+        <textView id='commentText'
             bottom={8} right={16}
             alignment='right'
             textColor='#7CB342'
             font='12px' />
-        <textView
-            id='authorText'
+        <textView id='authorText'
             bottom={8} left='#thumbView 16' right='#commentText 16'
             textColor='#767676'
             font='12px' />
@@ -52,6 +48,8 @@ import { RedditPostData } from './RedditService';
     this.author = this._item.author;
   }
 
-  public get item() { return this._item; }
+  public get item() {
+    return this._item;
+  }
 
 }
