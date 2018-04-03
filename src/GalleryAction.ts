@@ -1,7 +1,7 @@
 import { Action, Properties, PropertyChangedEvent, Page } from 'tabris';
 import { property } from 'tabris-decorators';
 
-type Mode = 'gallery' | 'list';
+export type Mode = 'gallery' | 'list';
 
 interface GalleryActionParams {page: Page; }
 
