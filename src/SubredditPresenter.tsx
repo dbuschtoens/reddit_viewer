@@ -1,9 +1,9 @@
+import { last } from 'lodash';
+import { Composite } from 'tabris';
+import { ChangeListeners, inject, Listeners, shared } from 'tabris-decorators';
+import { AUTO_FETCH_COUNT, INITIAL_ITEM_COUNT, RedditPost, ViewMode } from './common';
 import RedditPostPage from './RedditPostPage';
 import RedditService from './RedditService';
-import { last } from 'lodash';
-import { RedditPost, AUTO_FETCH_COUNT, INITIAL_ITEM_COUNT, ViewMode } from './common';
-import { NavigationView, Composite } from 'tabris';
-import { shared, Listeners, ChangeListeners, inject } from 'tabris-decorators';
 
 export abstract class SubredditView {
   public title: string;

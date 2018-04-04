@@ -1,10 +1,22 @@
 {
-	"editor.tabSize": 2,
+  "editor.tabSize": 2,
   "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "json.format.enable": true,
+  "typescript.format.enable": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "editor.wordWrap": "on",
   "editor.wordBasedSuggestions": false,
-  "tslint.enable": true,  
+  "tslint.enable": true,
+  "typescript.extension.sortImports.sortMethod": "path",
+  "typescript.extension.sortImports.pathSortOrder": [
+    "package",
+    "relativeDownLevel",
+    "relativeUpLevel"
+  ],
+  "typescript.extension.sortImports.sortOnSave": true,
+  "typescript.extension.sortImports.maxNamedImportsInSingleLine": 20,
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,

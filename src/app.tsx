@@ -1,24 +1,24 @@
-import { ui, NavigationView } from 'tabris';
-import { FILL_LAYOUT, DEFAULT_REDDITS } from './common';
-import SubredditPage from './SubredditPage';
-import ViewModeToggleAction from './ViewModeToggleAction';
+import { ui } from 'tabris';
 import { injector } from 'tabris-decorators';
-import SubredditSelectorView from './SubredditSelectorView';
+import { DEFAULT_REDDITS, FILL_LAYOUT } from './common';
+import SubredditPage from './SubredditPage';
+import * as subredditPresenter from './SubredditPresenter';
 import SubredditSelectorPresenter from './SubredditSelectorPresenter';
 import * as selectorPresenter from './SubredditSelectorPresenter';
-import * as subredditPresenter from './SubredditPresenter';
+import SubredditSelectorView from './SubredditSelectorView';
+import ViewModeToggleAction from './ViewModeToggleAction';
 
 ui.contentView.append(
   <navigationView {...FILL_LAYOUT} drawerActionVisible>
-    <ViewModeToggleAction/>
+    <ViewModeToggleAction />
     <SubredditPage />
   </navigationView>
 );
 
-ui.drawer.set({enabled: true}).append(
+ui.drawer.set({ enabled: true }).append(
   <SubredditSelectorView
-    {...FILL_LAYOUT}
-    onSelect={() => ui.drawer.close()}/>
+      {...FILL_LAYOUT}
+      onSelect={() => ui.drawer.close()} />
 );
 
 injector.addHandler(subredditPresenter.ViewModeToggleView, () => ui.find(ViewModeToggleAction).first());

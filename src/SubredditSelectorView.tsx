@@ -1,13 +1,6 @@
-import {
-  Page, Properties, CollectionView, PropertyChangedEvent, Widget, EventObject,
-  CollectionViewSelectEvent,
-  TextView,
-  Composite
-} from 'tabris';
-import {
-  getById, component, event, Listeners, property, ChangeListeners, ChangeListener, Listener
-} from 'tabris-decorators';
-import { FILL_LAYOUT, ViewMode, isList, RedditPost } from './common';
+import { CollectionView, Composite, Page, Properties, Widget } from 'tabris';
+import { ChangeListener, ChangeListeners, component, event, getById, Listener, Listeners, property } from 'tabris-decorators';
+import { FILL_LAYOUT, ViewMode } from './common';
 import * as presenter from './SubredditSelectorPresenter';
 
 @component export default class SubredditSelectorView
@@ -20,7 +13,6 @@ import * as presenter from './SubredditSelectorPresenter';
   @event public readonly onSelectionIndexChanged: ChangeListeners<number>;
 
   private _items: string[] = [];
-  private _mode: ViewMode;
   @getById private collectionView: CollectionView;
   private jsxProperties: JSX.CompositeProperties & Properties<SubredditSelectorView> & {
     onSelectionIndexChanged?: ChangeListener<number>,

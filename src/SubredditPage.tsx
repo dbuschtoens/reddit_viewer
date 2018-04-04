@@ -1,11 +1,8 @@
-import {
-  Page, Properties, CollectionView, PropertyChangedEvent, Widget, EventObject,
-  CollectionViewSelectEvent
-} from 'tabris';
-import { getById, component, event, Listeners } from 'tabris-decorators';
-import RedditListCell from './RedditListCell';
+import { CollectionView, Page, Properties, PropertyChangedEvent, Widget } from 'tabris';
+import { component, event, getById, Listeners } from 'tabris-decorators';
+import { FILL_LAYOUT, isList, RedditPost, ViewMode } from './common';
 import RedditGalleryCell from './RedditGalleryCell';
-import { FILL_LAYOUT, ViewMode, isList, RedditPost } from './common';
+import RedditListCell from './RedditListCell';
 import * as presenter from './SubredditPresenter';
 
 @component export default class SubredditPage extends Page implements presenter.SubredditView {

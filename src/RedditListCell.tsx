@@ -1,5 +1,5 @@
-import { Composite, ImageView } from 'tabris';
-import { bind, getById, component, property } from 'tabris-decorators';
+import { Composite } from 'tabris';
+import { component, property } from 'tabris-decorators';
 import { RedditPostData } from './common';
 
 @component export default class RedditListCell extends Composite {
@@ -48,8 +48,8 @@ import { RedditPostData } from './common';
     this._item = item;
     this.image = item.thumbnail;
     this.title = item.title,
-    this.commentText = item.num_comments + ' comments',
-    this.author = item.author;
+      this.commentText = item.num_comments + ' comments',
+      this.author = item.author;
   }
 
   public get item() {

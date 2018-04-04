@@ -1,9 +1,6 @@
-import RedditPostPage from './RedditPostPage';
-import RedditService from './RedditService';
-import { last } from 'lodash';
-import { RedditPost, AUTO_FETCH_COUNT, ViewMode, DEFAULT_REDDITS } from './common';
-import { NavigationView, Composite } from 'tabris';
-import { shared, Listeners, ChangeListeners, inject, injector } from 'tabris-decorators';
+import { Composite, NavigationView } from 'tabris';
+import { ChangeListeners, inject, Listeners, shared } from 'tabris-decorators';
+import { AUTO_FETCH_COUNT, DEFAULT_REDDITS, RedditPost, ViewMode } from './common';
 import SubredditPage from './SubredditPage';
 import SubredditPresenter from './SubredditPresenter';
 

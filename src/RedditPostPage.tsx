@@ -1,6 +1,6 @@
-import { Page, Properties, PageProperties } from 'tabris';
-import { FILL_LAYOUT, RedditPost } from './common';
+import { Page, PageProperties, Properties } from 'tabris';
 import { property } from 'tabris-decorators';
+import { FILL_LAYOUT, RedditPost } from './common';
 
 export default class RedditPostPage extends Page {
 
