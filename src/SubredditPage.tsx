@@ -51,6 +51,11 @@ import * as presenter from './SubredditPresenter';
     return this._items.concat(); // safe copy
   }
 
+  public clear() {
+    this._items = [];
+    this.collectionView.itemCount = 0;
+  }
+
   public addItems(newItems: RedditPost[]) {
     this.loading = false;
     const insertionIndex = this._items.length;

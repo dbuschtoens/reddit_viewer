@@ -1,8 +1,16 @@
 export const FILL_LAYOUT = {left: 0, top: 0, right: 0, bottom: 0};
 
+export const INITIAL_ITEM_COUNT = 25;
+
 export const AUTO_FETCH_COUNT = 10;
 
-export const SUBREDDIT = 'petpictures';
+export const DEFAULT_REDDITS = [
+  'Pics',
+  'PetPictures',
+  'AdviceAnimals',
+  'Art',
+  'Memes'
+];
 
 export enum ViewMode { Gallery = 'gallery', List = 'list' }
 

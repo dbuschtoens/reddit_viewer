@@ -1,9 +1,9 @@
 import RedditPostPage from './RedditPostPage';
 import RedditService from './RedditService';
 import { last } from 'lodash';
-import { RedditPost, AUTO_FETCH_COUNT, ViewMode } from './common';
+import { RedditPost, AUTO_FETCH_COUNT, INITIAL_ITEM_COUNT, ViewMode } from './common';
 import { NavigationView, Composite } from 'tabris';
-import { Listeners, ChangeListeners, inject } from 'tabris-decorators';
+import { shared, Listeners, ChangeListeners, inject } from 'tabris-decorators';
 
 export abstract class SubredditView {
   public title: string;
@@ -14,6 +14,7 @@ export abstract class SubredditView {
   public abstract onItemsRequested: Listeners;
   public abstract onItemSelected: Listeners<{item: RedditPost}>;
   public abstract addItems(items: RedditPost[]): any;
+  public abstract clear(): any;
   public abstract parent(): Composite;
 }
 
@@ -23,15 +24,15 @@ export abstract class ViewModeToggleView {
   public onModeChanged: ChangeListeners<ViewMode>;
 }
 
-export default class SubredditPresenter {
+@shared export default class SubredditPresenter {
+
+  private _subreddit: string;
 
   constructor(
-    private readonly subreddit: string,
     @inject private readonly view: SubredditView,
     @inject private readonly viewModeToggleView: ViewModeToggleView,
     @inject private readonly service: RedditService
   ) {
-    view.title = '/r/' + this.subreddit;
     view.onItemsRequested(() => this.loadItems(AUTO_FETCH_COUNT));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
     view.onAppear(() => viewModeToggleView.visible = true);
@@ -40,12 +41,22 @@ export default class SubredditPresenter {
     this.updateMode();
   }
 
-  public async loadItems(count: number) {
+  public set subreddit(subreddit: string) {
+    this._subreddit = subreddit;
+    this.view.title = '/r/' + this.subreddit;
+    this.view.clear();
+    this.loadItems(INITIAL_ITEM_COUNT);
+  }
+
+  public get subreddit() {
+    return this._subreddit;
+  }
+
+  private async loadItems(count: number) {
     try {
       const newItems = await this.service.fetchItems(this.subreddit, count, last(this.view.items));
       this.view.addItems(newItems.filter(post => post.data.thumbnail !== 'default'));
     } catch (ex) {
-      // tslint:disable-next-line:no-console
       console.error(ex);
     }
   }
