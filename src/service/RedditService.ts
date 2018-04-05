@@ -1,6 +1,6 @@
 import { Injection, injectionHandler } from 'tabris-decorators';
 import { shared } from 'tabris-decorators';
-import { RedditJsonResponse, RedditPost } from './common';
+import { RedditJsonResponse, RedditPost } from '../common';
 
 @shared export default class RedditService {
 

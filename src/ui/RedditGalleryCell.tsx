@@ -1,6 +1,6 @@
 import { Composite, ImageView } from 'tabris';
 import { component, getById } from 'tabris-decorators';
-import { FILL_LAYOUT, RedditPostData } from './common';
+import { FILL_LAYOUT, RedditPostData } from '../common';
 
 @component export default class RedditGalleryCell extends Composite {
 

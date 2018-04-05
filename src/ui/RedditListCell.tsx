@@ -1,6 +1,6 @@
 import { Composite } from 'tabris';
 import { component, property } from 'tabris-decorators';
-import { RedditPostData } from './common';
+import { RedditPostData } from '../common';
 
 @component export default class RedditListCell extends Composite {
 

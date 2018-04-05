@@ -1,12 +1,12 @@
 import { ui } from 'tabris';
 import { injector } from 'tabris-decorators';
 import { DEFAULT_REDDITS, FILL_LAYOUT } from './common';
-import SubredditPage from './SubredditPage';
-import * as subredditPresenter from './SubredditPresenter';
-import SubredditSelectorPresenter from './SubredditSelectorPresenter';
-import * as selectorPresenter from './SubredditSelectorPresenter';
-import SubredditSelectorView from './SubredditSelectorView';
-import ViewModeToggleAction from './ViewModeToggleAction';
+import * as subredditPresenter from './presenter/SubredditPresenter';
+import SubredditSelectorPresenter from './presenter/SubredditSelectorPresenter';
+import * as selectorPresenter from './presenter/SubredditSelectorPresenter';
+import SubredditPage from './ui/SubredditPage';
+import SubredditSelectorView from './ui/SubredditSelectorView';
+import ViewModeToggleAction from './ui/ViewModeToggleAction';
 
 ui.contentView.append(
   <navigationView {...FILL_LAYOUT} drawerActionVisible>

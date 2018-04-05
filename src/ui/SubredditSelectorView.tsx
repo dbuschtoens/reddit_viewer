@@ -1,7 +1,7 @@
 import { CollectionView, Composite, Page, Properties, Widget } from 'tabris';
 import { ChangeListener, ChangeListeners, component, event, getById, Listener, Listeners, property } from 'tabris-decorators';
-import { FILL_LAYOUT, ViewMode } from './common';
-import * as presenter from './SubredditSelectorPresenter';
+import { FILL_LAYOUT, ViewMode } from '../common';
+import * as presenter from '../presenter/SubredditSelectorPresenter';
 
 @component export default class SubredditSelectorView
   extends Composite

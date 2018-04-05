@@ -1,7 +1,7 @@
 import { Action, Properties } from 'tabris';
 import { ChangeListener, ChangeListeners, event, property } from 'tabris-decorators';
-import { isList, ViewMode } from './common';
-import * as presenter from './SubredditPresenter';
+import { isList, ViewMode } from '../common';
+import * as presenter from '../presenter/SubredditPresenter';
 
 export default class ViewModeToggleAction extends Action implements presenter.ViewModeToggleView {
 

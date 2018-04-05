@@ -1,8 +1,8 @@
 import { Composite, NavigationView } from 'tabris';
 import { ChangeListeners, inject, Listeners, shared } from 'tabris-decorators';
-import { AUTO_FETCH_COUNT, DEFAULT_REDDITS, RedditPost, ViewMode } from './common';
-import SubredditPage from './SubredditPage';
 import SubredditPresenter from './SubredditPresenter';
+import { AUTO_FETCH_COUNT, DEFAULT_REDDITS, RedditPost, ViewMode } from '../common';
+import SubredditPage from '../ui/SubredditPage';
 
 export abstract class SubredditSelectorView {
   public abstract items: string[];
