@@ -1,44 +1,23 @@
 import { last } from 'lodash';
-import { Composite } from 'tabris';
-import { ChangeListeners, inject, Listeners, shared } from 'tabris-decorators';
-import { AUTO_FETCH_COUNT, INITIAL_ITEM_COUNT, RedditPost, ViewMode } from '../common';
+import { inject, shared } from 'tabris-decorators';
+import { AUTO_FETCH_COUNT, INITIAL_ITEM_COUNT, RedditPost, SubredditView } from '../common';
+import Navigation from '../service/Navigation';
 import RedditService from '../service/RedditService';
 import RedditPostPage from '../ui/RedditPostPage';
-
-export abstract class SubredditView {
-  public title: string;
-  public mode: ViewMode;
-  public abstract items: RedditPost[];
-  public readonly onAppear: Listeners;
-  public readonly onDisappear: Listeners;
-  public abstract onItemsRequested: Listeners;
-  public abstract onItemSelected: Listeners<{item: RedditPost}>;
-  public abstract addItems(items: RedditPost[]): any;
-  public abstract clear(): any;
-  public abstract parent(): Composite;
-}
-
-export abstract class ViewModeToggleView {
-  public mode: ViewMode;
-  public visible: boolean;
-  public onModeChanged: ChangeListeners<ViewMode>;
-}
 
 @shared export default class SubredditPresenter {
 
   private _subreddit: string;
 
   constructor(
-    @inject private readonly view: SubredditView,
-    @inject private readonly viewModeToggleView: ViewModeToggleView,
-    @inject private readonly service: RedditService
+    @inject public readonly view: SubredditView,
+    @inject private readonly navigation: Navigation,
+    @inject private readonly reddit: RedditService
   ) {
     view.onItemsRequested(() => this.loadItems(AUTO_FETCH_COUNT));
     view.onItemSelected(ev => this.openDetailsPage(ev.item));
-    view.onAppear(() => viewModeToggleView.visible = true);
-    view.onDisappear(() => viewModeToggleView.visible = false);
-    viewModeToggleView.onModeChanged(() => this.updateMode());
-    this.updateMode();
+    view.viewModeToggleView.onModeChanged(() => this.updateViewMode());
+    this.updateViewMode();
   }
 
   public set subreddit(subreddit: string) {
@@ -54,21 +33,19 @@ export abstract class ViewModeToggleView {
 
   private async loadItems(count: number) {
     try {
-      const newItems = await this.service.fetchItems(this.subreddit, count, last(this.view.items));
+      const newItems = await this.reddit.fetchItems(this.subreddit, count, last(this.view.items));
       this.view.addItems(newItems.filter(post => post.data.thumbnail !== 'default'));
     } catch (ex) {
       console.error(ex);
     }
   }
 
-  private updateMode() {
-    this.view.mode = this.viewModeToggleView.mode;
+  private updateViewMode() {
+    this.view.mode = this.view.viewModeToggleView.mode;
   }
 
   private openDetailsPage = (item: RedditPost) => {
-    this.view.parent().append(
-      <RedditPostPage item={item}/>
-    );
+    this.navigation.navigateTo(<RedditPostPage item={item} />);
   }
 
 }

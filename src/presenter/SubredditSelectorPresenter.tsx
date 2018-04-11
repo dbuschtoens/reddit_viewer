@@ -1,19 +1,14 @@
 import { Composite, NavigationView } from 'tabris';
-import { ChangeListeners, inject, Listeners, shared } from 'tabris-decorators';
+import { inject, shared } from 'tabris-decorators';
 import SubredditPresenter from './SubredditPresenter';
-import { AUTO_FETCH_COUNT, DEFAULT_REDDITS, RedditPost, ViewMode } from '../common';
-import SubredditPage from '../ui/SubredditPage';
-
-export abstract class SubredditSelectorView {
-  public abstract items: string[];
-  public abstract selectionIndex: number;
-  public abstract onSelectionIndexChanged: ChangeListeners<number>;
-}
+import { SubredditSelectorView } from '../common';
+import Navigation from '../service/Navigation';
 
 @shared export default class SubredditSelectorPresenter {
 
   constructor(
-    @inject private readonly view: SubredditSelectorView,
+    @inject public readonly view: SubredditSelectorView,
+    @inject private readonly navigation: Navigation,
     @inject private readonly subredditPresenter: SubredditPresenter
   ) {
     view.onSelectionIndexChanged(() => this.updateSubreddit());
@@ -29,6 +24,7 @@ export abstract class SubredditSelectorView {
   }
 
   private updateSubreddit() {
+    this.navigation.navigateTo(this.subredditPresenter.view);
     this.subredditPresenter.subreddit = this.view.items[this.view.selectionIndex];
   }
 

@@ -1,11 +1,13 @@
-import { CollectionView, Composite, Page, Properties, Widget } from 'tabris';
-import { ChangeListener, ChangeListeners, component, event, getById, Listener, Listeners, property } from 'tabris-decorators';
-import { FILL_LAYOUT, ViewMode } from '../common';
-import * as presenter from '../presenter/SubredditSelectorPresenter';
+import { CollectionView, Composite, Properties, Widget } from 'tabris';
+import { ChangeListener, ChangeListeners, component, event, getById, injectable, Listener, Listeners, property } from 'tabris-decorators';
+import * as common from '../common';
+import { FILL_LAYOUT } from '../common';
 
-@component export default class SubredditSelectorView
+@component
+@injectable({implements: common.SubredditSelectorView, shared: true})
+export default class SubredditSelectorView
   extends Composite
-  implements presenter.SubredditSelectorView
+  implements common.SubredditSelectorView
 {
 
   @property public selectionIndex: number = 0;

@@ -1,16 +1,20 @@
 import { CollectionView, Page, Properties, PropertyChangedEvent, Widget } from 'tabris';
-import { component, event, getById, Listeners } from 'tabris-decorators';
+import { component, event, getById, injectable, Listeners } from 'tabris-decorators';
 import RedditGalleryCell from './RedditGalleryCell';
 import RedditListCell from './RedditListCell';
+import ViewModeToggleAction from './ViewModeToggleAction';
 import { FILL_LAYOUT, isList, RedditPost, ViewMode } from '../common';
-import * as presenter from '../presenter/SubredditPresenter';
+import * as common from '../common';
 
-@component export default class SubredditPage extends Page implements presenter.SubredditView {
+@component
+@injectable({implements: common.SubredditView})
+export default class SubredditPage extends Page implements common.SubredditView {
 
   @event public readonly onItemSelected: Listeners<{item: RedditPost}>;
   @event public readonly onItemsRequested: Listeners;
-  @event public readonly onAppear: Listeners;
-  @event public readonly onDisappear: Listeners;
+  public readonly viewModeToggleView: ViewModeToggleAction = (
+    <ViewModeToggleAction page={this}/>
+  );
 
   private _items: RedditPost[] = [];
   private _mode: ViewMode;
