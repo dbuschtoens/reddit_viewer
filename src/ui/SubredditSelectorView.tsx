@@ -29,7 +29,7 @@ export default class SubredditSelectorView
           {...FILL_LAYOUT}
           cellHeight={64}
           createCell={type => new TextCell()}
-          updateCell={(view, index) => TextCell.cast(view).text = this._items[index]}
+          updateCell={(view, index) => (view as TextCell).text = this._items[index]}
           onSelect={this.onSelect.trigger}/>
     );
   }
@@ -46,12 +46,6 @@ export default class SubredditSelectorView
 }
 
 @component class TextCell extends Composite {
-
-  public static cast(view: Widget): TextCell {
-    if (view instanceof TextCell) {
-      return view;
-    }
-  }
 
   @property public text: string;
 

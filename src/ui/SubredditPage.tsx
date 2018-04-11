@@ -29,8 +29,8 @@ export default class SubredditPage extends Page implements common.SubredditView 
           background='#f5f5f5'
           cellType={() => this._mode}
           cellHeight={(index, type) => isList(type) ? 96 : 160}
-          createCell={type => isList(type) ? new RedditListCell() : new RedditGalleryCell()}
-          updateCell={(view, index) => asRedditCell(view).item = this._items[index].data}
+          createCell={type => isList(type) ? <RedditListCell /> : <RedditGalleryCell />}
+          updateCell={(view, index) => (view as Cell).item = this._items[index].data}
           onSelect={ev => this.onItemSelected.trigger({item: this._items[ev.index]})}
           onLastVisibleIndexChanged={this.handleLastVisibleIndexChanged}/>
     );
@@ -74,9 +74,4 @@ export default class SubredditPage extends Page implements common.SubredditView 
 
 }
 
-function asRedditCell(view: Widget): RedditListCell | RedditGalleryCell {
-  if (view instanceof RedditListCell || view instanceof RedditGalleryCell) {
-    return view;
-  }
-  throw new Error('Unexpected cell type');
-}
+type Cell = RedditListCell | RedditGalleryCell;
