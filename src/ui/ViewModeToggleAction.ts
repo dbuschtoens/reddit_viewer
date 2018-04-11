@@ -8,9 +8,9 @@ export default class ViewModeToggleAction extends Action implements ViewModeTogg
     & {onModeChanged?: ChangeListener<ViewMode>}
     & Partial<ViewModeToggleAction>;
 
-  @event public readonly onModeChanged: ChangeListeners<ViewMode>;
   @property public mode: ViewMode;
   @property public readonly page: Page;
+  @event public readonly onModeChanged: ChangeListeners<ViewMode>;
 
   constructor(properties: Partial<ViewModeToggleAction>) {
     super(properties);

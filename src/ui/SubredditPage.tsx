@@ -1,4 +1,4 @@
-import { CollectionView, Page, Properties, PropertyChangedEvent, Widget } from 'tabris';
+import { CollectionView, Page, PropertyChangedEvent, Widget } from 'tabris';
 import { component, event, getById, injectable, Listeners } from 'tabris-decorators';
 import RedditGalleryCell from './RedditGalleryCell';
 import RedditListCell from './RedditListCell';
@@ -21,7 +21,7 @@ export default class SubredditPage extends Page implements common.SubredditView 
   private loading: boolean;
   @getById private collectionView: CollectionView;
 
-  constructor(properties?: Properties<SubredditPage>) {
+  constructor(properties?: Partial<SubredditPage>) {
     super(properties);
     this.append(
       <collectionView id='collectionView'

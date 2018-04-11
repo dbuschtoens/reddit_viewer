@@ -4,11 +4,11 @@ import { RedditPostData } from '../common';
 
 @component export default class RedditListCell extends Composite {
 
-  private _item: RedditPostData;
   @property private _commentText: string;
   @property private _title: string;
   @property private _author: string;
   @property private _image: Image;
+  private _item: RedditPostData;
 
   constructor() {
     super();

@@ -4,8 +4,8 @@ import { FILL_LAYOUT, RedditPostData } from '../common';
 
 @component export default class RedditGalleryCell extends Composite {
 
-  private _item: RedditPostData;
   @getById private thumbView: ImageView;
+  private _item: RedditPostData;
 
   constructor() {
     super();
