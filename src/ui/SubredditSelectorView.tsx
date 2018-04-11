@@ -28,7 +28,7 @@ export default class SubredditSelectorView
       <collectionView id='collectionView'
           {...FILL_LAYOUT}
           cellHeight={64}
-          createCell={type => new TextCell()}
+          createCell={() => new TextCell()}
           updateCell={(view, index) => (view as TextCell).text = this._items[index]}
           onSelect={this.onSelect.trigger}/>
     );
@@ -54,10 +54,10 @@ export default class SubredditSelectorView
     this.append(
       <widgetCollection>
         <textView
-          left={16} top={0} right={0} bottom={1}
-          bind-text='text'
-          background='white'
-          font='20px sans-serif'/>
+            left={16} top={0} right={0} bottom={1}
+            bind-text='text'
+            background='white'
+            font='20px sans-serif'/>
         <composite left={0} height={1} right={0} bottom={0} background='#dfdfdf'/>
       </widgetCollection>
     );

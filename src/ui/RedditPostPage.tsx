@@ -9,7 +9,7 @@ export default class RedditPostPage extends Page {
 
   constructor(properties: Partial<RedditPostPage>) {
     super({background: 'black'});
-    this.set(properties).append( // do this on item set
+    this.set(properties).append(
         this.item.data.url.endsWith('.jpg')
       ? <imageView {...FILL_LAYOUT} image={this.item.data.url} />
       : <webView {...FILL_LAYOUT} url={this.item.data.url} />
