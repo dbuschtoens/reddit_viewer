@@ -5,10 +5,10 @@ import { RedditPostData } from '../common';
 @component export default class RedditListCell extends Composite {
 
   private _item: RedditPostData;
-  @property private commentText: string;
-  @property private title: string;
-  @property private author: string;
-  @property private image: Image;
+  @property private _commentText: string;
+  @property private _title: string;
+  @property private _author: string;
+  @property private _image: Image;
 
   constructor() {
     super();
@@ -20,24 +20,24 @@ import { RedditPostData } from '../common';
           background='white'>
         <imageView id='thumbView'
             width={80} height={80}
-            bind-image='image'
+            bind-image='_image'
             background='#e0e0e0'
             scaleMode='fill' />
         <textView markupEnabled
             top={8} left='prev() 16' right={16}
-            bind-text='title'
+            bind-text='_title'
             textColor='#202020'
             font='medium 14px'
             maxLines={2} />
         <textView
             bottom={8} right={16}
-            bind-text='commentText'
+            bind-text='_commentText'
             alignment='right'
             textColor='#7CB342'
             font='12px' />
         <textView
             bottom={8} left='#thumbView 16' right='prev() 16'
-            bind-text='author'
+            bind-text='_author'
             textColor='#767676'
             font='12px' />
       </composite>
@@ -46,10 +46,10 @@ import { RedditPostData } from '../common';
 
   public set item(item: RedditPostData) {
     this._item = item;
-    this.image = item.thumbnail;
-    this.title = item.title,
-      this.commentText = item.num_comments + ' comments',
-      this.author = item.author;
+    this._image = item.thumbnail;
+    this._title = item.title,
+      this._commentText = item.num_comments + ' comments',
+      this._author = item.author;
   }
 
   public get item() {
