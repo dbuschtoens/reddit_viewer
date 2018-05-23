@@ -1,5 +1,5 @@
-import { CollectionView, Composite, Widget } from 'tabris';
-import { ChangeListener, ChangeListeners, component, event, getById, injectable, Listener, Listeners, property } from 'tabris-decorators';
+import { CollectionView, Composite } from 'tabris';
+import { ChangeListeners, component, event, getById, injectable, Listener, Listeners, property, ComponentJSX } from 'tabris-decorators';
 import * as common from '../common';
 import { FILL_LAYOUT } from '../common';
 
@@ -16,10 +16,7 @@ export default class SubredditSelectorView
 
   private _items: string[] = [];
   @getById private collectionView: CollectionView;
-  private jsxProperties: JSX.CompositeProperties & Partial<SubredditSelectorView> & {
-    onSelectionIndexChanged?: ChangeListener<number>,
-    onSelect?: Listener<{index: number}>
-  };
+  private jsxProperties: ComponentJSX<this>;
 
   constructor(properties?: Partial<SubredditSelectorView>) {
     super(properties);

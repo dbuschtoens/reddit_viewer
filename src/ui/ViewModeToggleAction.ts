@@ -1,12 +1,10 @@
 import { Action, Page } from 'tabris';
-import { ChangeListener, ChangeListeners, event, property } from 'tabris-decorators';
+import { ChangeListeners, event, property, ComponentJSX } from 'tabris-decorators';
 import { isList, ViewMode, ViewModeToggleView } from '../common';
 
 export default class ViewModeToggleAction extends Action implements ViewModeToggleView {
 
-  public jsxProperties: JSX.ActionProperties
-    & {onModeChanged?: ChangeListener<ViewMode>}
-    & Partial<ViewModeToggleAction>;
+  public jsxProperties: ComponentJSX<this>;
 
   @property public mode: ViewMode;
   @property public readonly page: Page;
