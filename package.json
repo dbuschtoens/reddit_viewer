@@ -1,24 +1,32 @@
 {
   "name": "reddit_viewer",
   "version": "0.1.0",
-  "main": "dist/app.js",
+  "main": "dist",
   "private": true,
   "scripts": {
-    "test": "tslint --project ./tsconfig.json",
+    "test": "npm run build && npm run lint && npm run mocha",
+    "lint": "tslint --project . -t verbose",
+    "mocha": "mocha --require ts-node/register ./test/*.test.*",
     "build": "tsc -p .",
-    "watch": "tsc -w -p .",
-    "start": "npm-run-all --parallel watch serve",
-    "serve": "tabris serve"
+    "watch": "tsc -p . -w --preserveWatchOutput --inlineSourceMap",
+    "start": "tabris serve -a -w"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.85",
-    "lodash": "^4.17.4",
-    "tabris": "2.5.0",
-    "tabris-decorators": "2.5.0"
+    "lodash": "^4.17.15",
+    "tabris": "~3.3.0",
+    "tabris-decorators": "~3.3.0"
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.2",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "@types/lodash": "^4.14.149",
+    "@types/mocha": "^7.0.1",
+    "@types/sinon": "^7.5.1",
+    "@types/sinon-chai": "^3.2.3",
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1",
+    "sinon": "^8.1.1",
+    "sinon-chai": "^3.4.0",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "~3.3.4000"
   }
 }
